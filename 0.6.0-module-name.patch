@@ -1,0 +1,28 @@
+--- origsrc/liblangtag-0.6.0/liblangtag/lt-ext-module.c	2015-11-12 03:31:48.000000000 -0600
++++ src/liblangtag-0.6.0/liblangtag/lt-ext-module.c	2016-07-25 01:49:51.076491500 -0500
+@@ -215,8 +215,13 @@ lt_ext_module_load(lt_ext_module_t *modu
+ {
+ 	lt_bool_t retval = FALSE;
+ 	lt_string_t *fullname = lt_string_new(NULL);
++#ifdef __CYGWIN__
++	char *filename = lt_strdup_printf("cyglangtag-ext-%s." LT_MODULE_SUFFIX,
++					  module->name);
++#else
+ 	char *filename = lt_strdup_printf("liblangtag-ext-%s." LT_MODULE_SUFFIX,
+ 					  module->name);
++#endif
+ 	char *path_list, *p, *s, *path;
+ 	const char *env = lt_getenv("LANGTAG_EXT_MODULE_PATH");
+ 	size_t len;
+@@ -390,7 +395,11 @@ lt_ext_module_new(const char *name)
+ 	if (retval) {
+ 		char *n = strdup(name);
+ 		char *filename = basename(n), *module = NULL;
++#ifdef __CYGWIN__
++		static const char *prefix = "cyglangtag-ext-";
++#else
+ 		static const char *prefix = "liblangtag-ext-";
++#endif
+ 		static size_t prefix_len = 0;
+ 		char singleton_c;
+ 		int singleton;

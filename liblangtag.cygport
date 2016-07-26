@@ -1,0 +1,46 @@
+inherit gnome2
+
+NAME="liblangtag"
+VERSION=0.6.0
+RELEASE=1
+CATEGORY="Libs"
+SUMMARY="Language identification tag interface library"
+DESCRIPTION="liblangtag is an interface library to access/deal with tags for
+identifying languages, which is described in RFC 5646."
+HOMEPAGE="http://tagoh.bitbucket.org/liblangtag/"
+SRC_URI="https://bitbucket.org/tagoh/liblangtag/downloads/liblangtag-${VERSION}.tar.bz2"
+PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/rpms/liblangtag.git/plain/0001-enum-must-be-declared-before-it-s-used.patch
+	0.6.0-module-name.patch
+	0.6.0-no-undefined.patch
+"
+
+PKG_NAMES="liblangtag1 liblangtag-common liblangtag-devel liblangtag-doc
+	   liblangtag-gobject0 liblangtag-gobject-devel girepository-LangTag0.6"
+liblangtag1_REQUIRES="liblangtag-common"
+# change LANGTAG_MODULEDIR if soname changes
+liblangtag1_CONTENTS="
+	usr/bin/cyglangtag-1.dll
+	usr/lib/liblangtag/cyglangtag-ext-*.dll
+"
+liblangtag_common_CONTENTS="
+	usr/share/doc/liblangtag/
+	usr/share/liblangtag/
+"
+liblangtag_devel_CONTENTS="
+	--exclude=lt-gobject.h
+	usr/include/liblangtag/
+	usr/lib/liblangtag.dll.a
+	usr/lib/pkgconfig/liblangtag.pc
+"
+liblangtag_doc_CATEGORY="Doc"
+liblangtag_doc_CONTENTS="usr/share/gtk-doc/html/liblangtag/"
+liblangtag_gobject0_CONTENTS="usr/bin/cyglangtag-gobject-0.dll"
+liblangtag_gobject_devel_CONTENTS="
+	usr/include/liblangtag/lt-gobject.h
+	usr/lib/liblangtag-gobject.dll.a
+	usr/lib/pkgconfig/liblangtag-gobject.pc
+"
+girepository_LangTag0_6_CONTENTS="usr/*/gir*-1.0/LangTag-0.6.*"
+
+DIFF_EXCLUDES="*.pc"
